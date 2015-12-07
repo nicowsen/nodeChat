@@ -14,6 +14,7 @@ $('#sendBtn').click(function () {
       if (usr) {
         $('.container').append('<div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title">' + usr + '</h3></div><div class="panel-body"> ' + msg + '</div></div>');
         $('#chatInput').val("");
+        $("html, body").animate({ scrollTop: $(document).height() }, 500);
       } else {
         alert("Username must not be empty!");
       }
