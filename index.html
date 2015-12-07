@@ -28,7 +28,7 @@
           <form class="navbar-form navbar-left" role="search">
 
                   <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username">
+                    <input id="usrName" type="text" class="form-control" placeholder="Username">
                   </div>
           </form>
 
@@ -39,14 +39,31 @@
       </div><!-- /.container-fluid -->
     </nav>
 
+    <div class="container">
+
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container-fluid">
+        <div class="row" style="padding: 10px;">
+          <div class="col-lg-10"><input class="form-control input-lg" id="chatInput" type="text"></div>
+          <div class="col-lg-1"><a id="clearBtn" class="btn btn-lg btn-danger pull-right">Clear</a></div>
+          <div class="col-lg-1"><a id="sendBtn" class="btn btn-lg btn-primary pull-right">Send</a></div>
+        </div>
+      </div>
+    </nav>
+
 
     <div id="content">
     </div>
 
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-    <!-- Jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="js/event_handling.js"></script>
   </body>
 </html>
