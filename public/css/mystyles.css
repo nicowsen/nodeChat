@@ -1,0 +1,18 @@
+#chatMessages {
+	margin-top: 65px;
+	margin-bottom: 30px;
+	border-radius: 5px;
+	padding: 40px;
+	*box-shadow: 5px 5px 3px #bbb;
+	*border: 1px solid #ccc;
+}
+
+div.chatMessage {
+	margin-bottom: 30px;
+}
+
+.input-group-addon.info {
+    color: rgb(255, 255, 255);
+    background-color: rgb(57, 179, 215);
+    border-color: rgb(38, 154, 188);
+}

@@ -1,0 +1,12 @@
+{
+  "name":"node.js_chat",
+  "author":"nicolasschmidt",
+  "dependencies": {
+  	"socket.io": "*",
+  	"express": "*",
+  	"jade": "*"
+  	  },
+  "scripts": {
+  	"start": "run app.js to start the chat app"
+  }
+}
