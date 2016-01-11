@@ -38,40 +38,56 @@ server.listen(port);
 console.log('Server started and listening on port ' + port);
 
 
-var users = 0; //count the users
+// Counter für angemeldete Benutzer
+var users = 0;
 
-io.sockets.on('connection', function (socket) { // First connection
-	users += 1; // Add 1 to the count
-	reloadUsers(); // Send the count to all the users
+io.sockets.on('connection', function (socket) {
+	users += 1;
 
-	socket.on('message', function (data) { // Broadcast the message to all
+	// Sende Anzahl der Benutzer an alle Benutzer
+	reloadUsers();
+
+	// Setzen des Benutzernamens
+	socket.on('setUsername', function (data) {
+		// Überprüfe ob Name frei ist
+		if (usernames.indexOf(data) == -1) {
+			usernames.push(data);
+			socket.nickname = data;
+
+			// Sende Status OK zurück zum Client
+			socket.emit('usernameStatus', 'ok');
+			console.log('user ' + data + ' connected');
+		}	else {
+			// Sende Fehler zurück zum Client
+			socket.emit('usernameStatus', 'Username taken'); // Send the error
+		}
+	});
+
+	// Bei neuer Nachricht...
+	socket.on('message', function (data) {
+		// Wenn Benutzer einen Benutzernamen hat
 		if (usernameIsSet(socket)) {
+			// Konstruiere ein message-Objekt
 			var message = {
 											date : new Date().toISOString(),
 											username : socket.nickname,
 											text : data
 										};
 
+			// Und sende es an alle Benutzer
 			socket.broadcast.emit('message', message);
 			console.log('user ' + message.username + ' said \'' + message.text + '\'');
 		}
 	});
 
-	socket.on('setUsername', function (data) { // Assign a name to the user
-		if (usernames.indexOf(data) == -1) // Test if the name is already taken
-		{
-			usernames.push(data);
-			socket.nickname = data;
-			socket.emit('usernameStatus', 'ok');
-			console.log('user ' + data + ' connected');
-		}	else {
-			socket.emit('usernameStatus', 'error'); // Send the error
-		}
-	});
 
+	// Bei Trennung der Verbindung...
 	socket.on('disconnect', function () { // Disconnection of the client
+		// Reduziere die Anzahl der Benutzer um 1
 		users -= 1;
+		// Sende neue Anzahl an alle Benutzer
 		reloadUsers();
+
 		if (usernameIsSet(socket))
 		{
 			console.log('disconnect...');
