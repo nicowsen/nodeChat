@@ -6,9 +6,9 @@ html
 		link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel="stylesheet", integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==", crossorigin="anonymous")
 		script(src='http://code.jquery.com/jquery-1.7.1.min.js')
 		script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js')
+		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js", integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==", crossorigin="anonymous")
 		script(src="/socket.io/socket.io.js")
 		script(src="js/script.js")
-		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js", integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==", crossorigin="anonymous")
 	body
 		div.container#main
 			nav.navbar.navbar-fixed-top.navbar-inverse
@@ -16,6 +16,10 @@ html
 					div.navbar-header
 						a.navbar-brand Node.js Chat
 					div.collapse.navbar-collapse
+						ul.nav.navbar-nav.navbar-right
+							li
+								a Users connected
+									span.badge#userCount 5
 		div.container#chatMessages
 			div.input-group.chatMessage
 				p.form-control
@@ -23,6 +27,17 @@ html
 		nav.navbar.navbar-fixed-bottom
 			div.container
 				div.input-group
-					input(type='text').form-control
+					input(type='text').form-control#messageInput
 					span.input-group-btn
 						button(type='button').btn.btn-default#sendBtn Send!
+		button(type='button', data-toggle='modal', data-target='#myModal').btn.btn-danger hi
+		div.modal.fade#myModal
+			div.modal-dialog
+				div.modal-content
+					div.modal-header
+						p asd
+					div.modal-body
+						p asdasdasdsa
+					div.modal-footer
+						button(type='button', data-dismiss='modal').btn.btn-default Close
+						button(type='button').btn.btn-primary Save

@@ -1,84 +1,95 @@
-
-
-var messageContainer, submitButton;
-var pseudo = "";
+var messageContainer, sendBtnButton;
+var username = "";
 
 // Init
 $(function() {
 	messageContainer = $('#messageInput');
-	submitButton = $("#submit");
+	sendBtnButton = $("#sendBtn");
 	bindButton();
+
 	window.setInterval(time, 1000*10);
-	$("#alertPseudo").hide();
-	$('#modalPseudo').modal('show');
-	$("#pseudoSubmit").click(function() {setPseudo()});
-	$("#chatEntries").slimScroll({height: '600px'});
-	submitButton.click(function() {sentMessage();});
-	setHeight();
+
+	// username modal
+
+	$("#usernameSubmit").click(function() {
+		setUsername();
+	});
+
+	sendBtnButton.click(function() {
+		sendMessage();
+	});
+
 	$('#messageInput').keypress(function (e) {
-	if (e.which == 13) {sentMessage();}});
+		if (e.which == 13) {
+			sendMessage();
+		}
+	});
 });
 
 //Socket.io
 var socket = io.connect();
 socket.on('connect', function() {
 	console.log('connected');
+	alert("connected to socketio");
 });
-socket.on('nbUsers', function(msg) {
-	$("#nbUsers").html(msg.nb);
+
+socket.on('userCount', function(msg) {
+	$("#userCount").html(msg.userCount);
 });
+
 socket.on('message', function(data) {
-	addMessage(data['message'], data['pseudo'], new Date().toISOString(), false);
+	addMessage(data['message'], data['username'], new Date().toISOString(), false);
 	console.log(data);
 });
 
 //Help functions
-function sentMessage() {
-	if (messageContainer.val() != "")
-	{
-		if (pseudo == "")
-		{
-			$('#modalPseudo').modal('show');
+function sendMessage() {
+	if (messageContainer.val() != "") {
+		if (username == "")	{
+			$('#modalUsername').modal('show');
 		}
-		else
-		{
+		else {
 			socket.emit('message', messageContainer.val());
 			addMessage(messageContainer.val(), "Me", new Date().toISOString(), true);
 			messageContainer.val('');
-			submitButton.button('loading');
+			sendBtnButton.button('loading');
 		}
 	}
 }
-function addMessage(msg, pseudo, date, self) {
-	if(self) var classDiv = "row message self";
-	else var classDiv = "row message";
-	$("#chatEntries").append('<div class="'+classDiv+'"><p class="infos"><span class="pseudo">'+pseudo+'</span>, <time class="date" title="'+date+'">'+date+'</time></p><p>' + msg + '</p></div>');
-	time();
+
+function addMessage(msg, username, date, self) {
+	var chatMessage = '' +
+	'<div class="input-group chatMessage">' +
+		'<p class="form-control">' + msg + '</p>' +
+		'<span class="input-group-addon info">' + username + '</span>'+
+	'</div>';
+
+	$('#chatMessages').append(chatMessage);
 }
 
-function bindButton() {
-	submitButton.button('loading');
-	messageContainer.on('input', function() {
-		if (messageContainer.val() == "") submitButton.button('loading');
-		else submitButton.button('reset');
-	});
-}
-function setPseudo() {
-	if ($("#pseudoInput").val() != "")
-	{
-		socket.emit('setPseudo', $("#pseudoInput").val());
-		socket.on('pseudoStatus', function(data){
+// function bindButton() {
+// 	sendBtn.button('loading');
+// 	messageContainer.on('input', function() {
+// 		if (messageContainer.val() === "") sendBtnButton.button('loading');
+// 		else sendBtnButton.button('reset');
+// 	});
+// }
+
+function setUsername() {
+	if ($("#usernameInput").val() !== "") {
+		socket.emit('setUsername', $("#usernameInput").val());
+		socket.on('usernameStatus', function(data){
 			if(data == "ok")
 			{
-				$('#modalPseudo').modal('hide');
-				$("#alertPseudo").hide();
-				pseudo = $("#pseudoInput").val();
+				$('#modalUsername').modal('hide');
+				$("#alertUsername").hide();
+				username = $("#usernameInput").val();
 			}
 			else
 			{
-				$("#alertPseudo").slideDown();
+				$("#alertUsername").slideDown();
 			}
-		})
+		});
 	}
 }
 function time() {
